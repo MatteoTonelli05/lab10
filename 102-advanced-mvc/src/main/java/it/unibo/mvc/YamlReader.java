@@ -2,22 +2,24 @@ package it.unibo.mvc;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.Map;
 
-public class YamlReader<K,V> {
-    private Map<K,V> data;
+public class YamlReader{
+    private Map<String, Integer> data;
 
     /**
      * constructor.
      * @param filePath file to read
      */
-    @SuppressWarnings("unchecked")
     public YamlReader(String filePath){
+        data = new HashMap<>();
+        String separ = ":";
         try(final BufferedReader fr=new BufferedReader(new FileReader(filePath));){
             String tmp;
             while((tmp = fr.readLine()) != null)
             {
-                data.put((K)tmp.split(":")[0], (V)tmp.split(":")[1]);
+                data.put(tmp.split(separ)[0].trim(), Integer.parseInt(tmp.split(separ)[1].trim()));
             }
         }catch(Exception e)
         {
@@ -25,7 +27,7 @@ public class YamlReader<K,V> {
         }
     }
 
-    public V getParameter(K s)
+    public Integer getParameter(String s)
     {
         return data.get(s);
     }
