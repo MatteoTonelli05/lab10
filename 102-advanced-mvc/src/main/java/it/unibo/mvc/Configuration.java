@@ -62,15 +62,14 @@ public final class Configuration {
      * 
      */
     public static class Builder {
-        /*private static final int MIN = 0;
-        * private static final int MAX = 100;
-        * private static final int ATTEMPTS = 10;
-        */
         
-
-        private int min;
-        private int max;
-        private int attempts;
+        private static final int MIN = 0;
+        private static final int MAX = 100;
+        private static final int ATTEMPTS = 10;
+        
+        private int min = MIN;
+        private int max = MAX;
+        private int attempts = ATTEMPTS;
         private boolean consumed = false;
 
         /**
@@ -101,10 +100,14 @@ public final class Configuration {
         }
 
         public Builder setDefaultConfiguration(String filePath){
-            YamlReader yamlReader = new YamlReader(filePath);
-            this.min = yamlReader.getParameter("minimum");
-            this.max = yamlReader.getParameter("maximum");
-            this.attempts = yamlReader.getParameter("attempts");
+            if( filePath != null)
+            {
+                YamlReader yamlReader = new YamlReader(filePath);
+                this.min = yamlReader.getParameter("minimum");
+                this.max = yamlReader.getParameter("maximum");
+                this.attempts = yamlReader.getParameter("attempts");
+                return this;
+            }
             return this;
         }
 
@@ -123,6 +126,7 @@ public final class Configuration {
         {
             setDefaultConfiguration(filePath);
         }
+
     }
 }
 
