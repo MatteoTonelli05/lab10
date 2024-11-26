@@ -1,6 +1,5 @@
 package it.unibo.mvc;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -8,14 +7,9 @@ import java.util.List;
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-
-    /* 
-    * private static final int MIN = 0;
-    * private static final int MAX = 100;
-    * private static final int ATTEMPTS = 10;
-    */
-    private final Configuration conf;
-    private String filePath = "src".concat(File.separator).concat("main").concat(File.separator).concat("resources").concat(File.separator).concat("config.yml");
+    //private static final int MIN = 0;
+    //private static final int MAX = 100;
+    //private static final int ATTEMPTS = 10;
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
@@ -28,13 +22,17 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
         /*
          * Side-effect proof
          */
-        conf = new Configuration.Builder(filePath).build();
         this.views = Arrays.asList(Arrays.copyOf(views, views.length));
         for (final DrawNumberView view: views) {
             view.setObserver(this);
             view.start();
         }
-        this.model = new DrawNumberImpl(conf.getMin(), conf.getMax(), conf.getAttempts());
+        final YamlReader yamlReader = new YamlReader();
+        final Configuration conf = new Configuration.Builder()
+        .setMin(yamlReader.getParameter("minimum"))
+        .setMax(yamlReader.getParameter("maximum"))
+        .setAttempts(yamlReader.getParameter("attempts")).build();
+        this.model = new DrawNumberImpl(conf);
     }
 
     @Override
@@ -73,7 +71,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @throws FileNotFoundException 
      */
     public static void main(final String... args) throws FileNotFoundException {
-        new DrawNumberApp(new DrawNumberViewImpl(), new DrawNumberViewImpl());
+        new DrawNumberApp(new DrawNumberViewImpl());
     }
 
 }
