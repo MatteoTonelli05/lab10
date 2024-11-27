@@ -7,31 +7,31 @@ import java.util.List;
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    //private static final int MIN = 0;
-    //private static final int MAX = 100;
-    //private static final int ATTEMPTS = 10;
+    // private static final int MIN = 0;
+    // private static final int MAX = 100;
+    // private static final int ATTEMPTS = 10;
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
 
     /**
      * @param views
-     *            the views to attach
+     *              the views to attach
      */
     public DrawNumberApp(final DrawNumberView... views) {
         /*
          * Side-effect proof
          */
         this.views = Arrays.asList(Arrays.copyOf(views, views.length));
-        for (final DrawNumberView view: views) {
+        for (final DrawNumberView view : views) {
             view.setObserver(this);
             view.start();
         }
         final YamlReader yamlReader = new YamlReader();
         final Configuration conf = new Configuration.Builder()
-        .setMin(yamlReader.getParameter("minimum"))
-        .setMax(yamlReader.getParameter("maximum"))
-        .setAttempts(yamlReader.getParameter("attempts")).build();
+                .setMin(yamlReader.getParameter("minimum"))
+                .setMax(yamlReader.getParameter("maximum"))
+                .setAttempts(yamlReader.getParameter("attempts")).build();
         this.model = new DrawNumberImpl(conf);
     }
 
@@ -39,11 +39,11 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
     public void newAttempt(final int n) {
         try {
             final DrawResult result = model.attempt(n);
-            for (final DrawNumberView view: views) {
+            for (final DrawNumberView view : views) {
                 view.result(result);
             }
         } catch (IllegalArgumentException e) {
-            for (final DrawNumberView view: views) {
+            for (final DrawNumberView view : views) {
                 view.numberIncorrect();
             }
         }
@@ -67,8 +67,8 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
 
     /**
      * @param args
-     *            ignored
-     * @throws FileNotFoundException 
+     *             ignored
+     * @throws FileNotFoundException
      */
     public static void main(final String... args) throws FileNotFoundException {
         new DrawNumberApp(new DrawNumberViewImpl());
