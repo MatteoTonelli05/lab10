@@ -57,5 +57,4 @@ public final class PrintStreamView implements DrawNumberView {
     public void result(final DrawResult res) {
         out.println(res.getDescription());
     }
-
 }

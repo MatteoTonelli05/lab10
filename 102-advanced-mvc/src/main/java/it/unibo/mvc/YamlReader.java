@@ -13,23 +13,25 @@ import java.util.Map;
  */
 public class YamlReader {
     private final Map<String, Integer> data;
-    private static final String FILEPATH = "src".concat(File.separator).concat("main").concat(File.separator)
-            .concat("resources").concat(File.separator).concat("config.yml");
+    private static final String FILESTARTERPATH = "src"
+            .concat(File.separator).concat("main").concat(File.separator)
+            .concat("resources").concat(File.separator);
 
     /**
      * constructor.
+     * @param fileName only the name of the config file with its extension
      */
-    public YamlReader() {
+    public YamlReader(final String fileName) throws IOException {
+        final String filePath = FILESTARTERPATH.concat(fileName);
+        System.out.println(filePath); //NOPMD only for exercise purpose
         data = new HashMap<>();
         final String separ = ":";
-        try (BufferedReader fr = new BufferedReader(new FileReader(FILEPATH, StandardCharsets.UTF_8));) {
+        try (BufferedReader fr = new BufferedReader(new FileReader(filePath, StandardCharsets.UTF_8))) {
             String tmp = fr.readLine();
             while (tmp != null) {
                 data.put(tmp.split(separ)[0].trim(), Integer.parseInt(tmp.split(separ)[1].trim()));
                 tmp = fr.readLine();
             }
-        } catch (IOException e) {
-            e.printStackTrace(); // NOPMD only for exercise
         }
     }
 

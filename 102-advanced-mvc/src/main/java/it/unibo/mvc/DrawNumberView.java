@@ -24,4 +24,12 @@ public interface DrawNumberView {
      * @param res the result of the last draw
      */
     void result(DrawResult res);
+
+    /**
+     * @param err
+     */
+    default
+    void displayError(final String err) {
+        System.out.println(err); //NOPMD only for exercise purpose
+    }
 }
